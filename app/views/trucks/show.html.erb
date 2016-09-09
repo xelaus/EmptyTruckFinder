@@ -1,0 +1,113 @@
+<% @search_truck = session[:temp_truck] %>
+<% #session.delete(:temp_truck) %>
+
+<p>Searching for empty Trucks;</p>
+<%
+
+    
+
+
+
+
+    search_origin = @search_truck['from_loc'] 
+    search_destination = @search_truck['to_loc']
+    search_distance = @search_truck['distance']
+    search_duration = @search_truck['duration']
+    search_from_country = @search_truck['from_country']
+    search_to_country = @search_truck['to_country']
+%>
+
+<p><b>From:</b> <%= search_origin %> </p>
+<p><b>To:</b> <%= search_destination %> </p>
+
+<%
+    def getDuration (loc1, loc2)
+        matrix = GoogleDistanceMatrix::Matrix.new
+        address = GoogleDistanceMatrix::Place.new address: loc1
+        dest_address = GoogleDistanceMatrix::Place.new address: loc2
+    
+        matrix.origins << address
+        matrix.destinations << dest_address 
+    
+        matrix.configure do |config|
+            config.mode = 'driving'  
+            config.google_api_key = "AIzaSyDHyweeenexp-lJjaSVVXFAEv-yhTmwpZA"
+        end
+    
+        matrix.route_for origin: address, destination: dest_address
+        distance = matrix.shortest_route_by_duration_to(dest_address)
+        
+        if distance
+            return distance.duration_in_seconds
+        else
+            return -1
+        end
+    end
+
+
+%>
+
+
+<% @trucks = Truck.where("trucks.from_country = '" + search_from_country + "' OR trucks.to_country = '" + search_to_country + "'")%>
+
+<% search_duration = getDuration(search_origin,search_destination) %>
+
+<h2>Postings for your search:</h2>
+
+<% postings = Array.new %>
+
+<% @trucks.each do |t| %>
+
+    <% 
+        truck_origin = t[:from_loc] 
+        truck_destination = t[:to_loc] 
+        original_duration = t[:duration]
+
+        duration1 = getDuration(truck_origin,search_origin)
+        if duration1 == -1 
+            next
+        end
+
+        duration2 = getDuration(search_destination,truck_destination)
+        if duration2 == -1
+            next
+        end
+
+    %>
+
+    <% new_time = duration1 + search_duration + duration2 %>
+    <% extra_time = new_time - original_duration %>
+    <% if new_time < (1.2 * original_duration) %>
+
+    <%
+        temp_user = @user.find(t[:user_id])
+        temp = OpenStruct.new({ :origin => truck_origin, :destination => truck_destination, :company_name => t[:company_name], :phone => temp_user[:phone], :email => temp_user[:email], :extra_time => extra_time})
+        postings.push(temp);
+    %>
+
+    <% end %>
+
+<% end %>
+
+<table id="trucks_table">
+        <tr>
+            <th>Origin</th>
+            <th>Destination</th> 
+            <th>Company</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Extra</th>
+        </tr>
+    <% postings.sort! {|a,b| a.extra_time <=> b.extra_time} %>
+    <% postings.each do |p| %>
+        <tr>
+            <td><%= p.origin %></td>
+            <td><%= p.destination %></td>
+            <td><%= p.company_name %></td>
+            <td><%= p.email %></td>
+            <td><%= p.phone %></td>
+            <td><%= p.extra_time %></td>
+        </tr>
+    <% end %>
+</table>
+

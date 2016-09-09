@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+  <title>Logist</title>
+ <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+        <%= stylesheet_link_tag  'main' %>  
+    <%= stylesheet_link_tag  'layout' %> 
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'main' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<header>
+    <div id="leftheader">
+        <%= link_to "TRUCKS", root_path %>
+    </div>
+    
+    <div id="rightheader">
+        <p>
+        <% if current_user && current_user.admin? %>  
+            <%= link_to "Admin Panel", admin_path %>
+        <% end %>
+
+        
+        
+        </p>
+        <p><%= link_to "Log out", logout_path, method: "delete" %> </p>    
+    </div>
+</header>
+    <div id="wrapper">
+
+        <%= yield %>
+    </div>
+            <footer>
+          <p>Copyright</p> 
+        </footer>
+</body>
+</html>

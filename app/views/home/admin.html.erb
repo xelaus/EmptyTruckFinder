@@ -1,0 +1,71 @@
+<%= javascript_include_tag 'admin' %>
+
+<!--<p>Only admins can see this page.</p> -->
+
+<h1>Create a new user</h1>
+
+     <div id="login_msg">
+         <p id="login_msg_red">
+             <% if session['msgc_err'] %>
+             <%= session[:msgc_err] %>
+             <% session.delete(:msgc_err) %>
+            <% end %>
+         </p>
+        <p id="login_msg_green">
+            <% if session['msgc_reg'] %>
+                <%= session[:msgc_reg] %>
+                <% session.delete(:msgc_reg) %>
+            <% end %>
+         </p>
+     </div>
+
+<div id="create_form">
+    <%= form_for @user do |f|%>
+    <div class="field"> 
+        
+        <div class="form-group">
+            <%= f.email_field(:email, placeholder: 'Email', id: 'email_create') %> 
+        </div>    
+        
+        <div class="form-group">      
+            <%= f.text_field(:phone, placeholder: 'Phone Number', id: 'phone_number') %> 
+        </div> 
+        
+        <div class="form-group">
+            <%= f.password_field(:password, placeholder: 'Password', id: 'password_create') %> 
+        </div>
+        
+    </div> 
+    <div class="form-group">
+        <div id="btn-create" draggable="true">
+            <p>Create</p> 
+        </div>
+        <%= f.submit "Create", name: "reg_user", id: "btn-create-hidden" %> 
+    </div> 
+    <% end %>
+</div>
+
+<h2>Users for: <%= current_user.company_name %></h2> 
+
+
+<table id="users_table">
+        <tr>
+            <th>Email</th>
+            <th>Phone</th> 
+            <th>Options</th>
+        </tr>
+    <% @users.each do |u| %>
+        <tr>
+            <td><%= u.email %></td>
+            <td><%= u.phone %></td> 
+            <% if u.isAdmin == true %>
+                <td>Edit</td>
+            <% else %>
+                <td id="table_delete"><%= link_to "Remove", u, :method => :delete %></td>
+            <% end %>
+        </tr>
+    <% end %>
+</table>
+
+
+    

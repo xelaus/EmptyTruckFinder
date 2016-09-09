@@ -1,0 +1,116 @@
+
+           <section id="firstsection">
+             <div id="info">
+                <div id="title">
+                    <h1>Welcome to Trucks</h1>
+                </div>
+                <div id="infolist">
+                    <p>Library database for your home.</p>
+                   
+                    <p>Keep track of your books in the simplest way.</p>
+          
+                    <p>Add your books with their info.</p>
+                    
+                    <p>Access your books' info however you want to.</p>
+                    
+                    <p>Export your database to excel.</p>
+                    
+                    <p>Wow so many trucks</p>
+                    
+                    <p>Its free for now.</p>
+                    
+                </div>
+            </div>
+
+           </section>
+ <section id="secondsection">
+     
+     
+     <div id="login_msg">
+         <p id="login_msg_red">
+            <% if session['msg'] %>
+                <%= session[:msg] %>
+                <% session.delete(:msg) %>
+            <% end %>
+         </p>
+        <p id="login_msg_green">
+            <% if session['msgl_reg'] %>
+                <%= session[:msgl_reg] %>
+                <% session.delete(:msgl_reg) %>
+            <% end %>
+         </p>
+     </div>
+     
+     <%= form_for(:session, url: login_path) do |f| %>
+        
+        <h1>Log in</h1>
+        
+        <div class="form-group">
+            <%= f.email_field :email, :placeholder => "Email", id: "email_input" %> 
+        </div>
+        
+        <div class="form-group">
+            <%= f.password_field :password, :placeholder => "Password", id: "password_input" %>
+        </div>
+        
+        <div class="form-group">
+            <a href="forgotpass.php"> <p id="forgotpass">Forgot your password?</p></a>
+            <div id="btn-login" draggable="true">
+               <p>Log In</p> 
+            </div>
+            <%= f.submit "Log in", class: "btn-submit", id: "btn-login-hidden" %>
+        </div>
+     
+     <% end %>
+     
+
+<br>
+     
+    <div id="signup_msg">
+         <p id="signup_msg_red">
+            <% if session['msgs'] %>
+                <%= session[:msgs] %>
+                <% session.delete(:msgs) %>
+            <% end %>
+         </p>
+        <p id="signup_msg_green">
+            <% if session['msgs_reg'] %>
+                <%= session[:msgs_reg] %>
+                <% session.delete(:msgs_reg) %>
+            <% end %>
+         </p>
+     </div>
+
+<%= form_for(@user) do |f| %>  
+  <div class="field"> 
+      <h1>Sign up</h1>
+      
+      <div class="form-group">
+          <%= f.text_field(:company_name, placeholder: 'Company Name', id: "company_name") %> 
+      </div>
+      
+      <div class="form-group">
+        <%= f.email_field(:email, placeholder: 'Email', id: "email_input_s") %> 
+      </div>
+      
+      <div class="form-group">
+          <%= f.text_field(:phone, placeholder: 'Phone Number', id: "phone_number") %> 
+      </div>
+      
+      <div class="form-group">
+          <%= f.password_field(:password, placeholder: 'Password', id: "password_input_s") %> 
+      </div>
+  </div> 
+  <div class="form-group">
+        <div id="btn-signup" draggable="true">
+            <p>Sign up</p> 
+        </div>
+      <%= f.submit "Sign up", name: "admin_user", id: "btn-signup-hidden" %> 
+  </div> 
+<% end %>
+
+<br>
+
+
+     
+</section>

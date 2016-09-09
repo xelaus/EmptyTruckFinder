@@ -1,0 +1,9 @@
+<%= form_for(@truck) do |f| %>  
+  <div class="field"> 
+      <%= f.text_field(:from_loc, placeholder: 'From') %> 
+      <%= f.email_field(:to_loc, placeholder: 'To') %> 
+  </div> 
+  <div class="actions"> 
+    <%= f.submit "Create" %> 
+  </div> 
+<% end %>

@@ -1,0 +1,11 @@
+<%= form_for(@user) do |f| %>  
+  <div class="field"> 
+      <%= f.text_field(:company_name, placeholder: 'Company Name') %> 
+      <%= f.email_field(:email, placeholder: 'Email') %> 
+      <%= f.text_field(:phone, placeholder: 'Phone Number') %> 
+      <%= f.password_field(:password, placeholder: 'Password') %> 
+  </div> 
+  <div class="actions"> 
+      <%= f.submit "Create", name: "admin_user" %> 
+  </div> 
+<% end %>

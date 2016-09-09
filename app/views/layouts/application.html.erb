@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+  <title>TRCUKS</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag  'main_login' %>  
+    <%= stylesheet_link_tag  'layout_login' %>  
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'login' %>
+    <%= csrf_meta_tags %>
+</head>
+<body>
+<header>
+    <div id="leftheader">
+        <p>TRUCKS</p>
+    </div>
+    
+    <div id="rightheader">
+        <p>About</p>    
+    </div>
+</header>
+    <div id="wrapper">
+        <%= yield %>
+    </div>
+            <footer>
+          <p>Copyright</p> 
+        </footer>
+</body>
+</html>
